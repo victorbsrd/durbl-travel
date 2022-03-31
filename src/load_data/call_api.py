@@ -6,9 +6,11 @@ import requests
 from datetime import datetime, timedelta
 
 
-load_dotenv()
+#load_dotenv()
 
-SNCF_KEY = os.getenv("SNCF_API_KEY")
+#SNCF_KEY = os.getenv("SNCF_API_KEY")
+SNCF_KEY = os.environ.get("SNCF_API_KEY")
+
 
 URL_BASE = "https://ressources.data.sncf.com//api/records/1.0/search/?dataset=tgvmax"
 PARAMS = {'Authentification':SNCF_KEY}
@@ -46,8 +48,12 @@ def main():
             dfs.append(df)
 
     data = pd.concat(dfs)
-
-    data.to_csv(f'data/load_{datetime.utcnow()}.csv') 
+    print(os.getcwd())
+    date_string = datetime.utcnow().strftime("%Y-%m-%d_%H_%M")
+    
+    print('writing')
+    data.to_csv(f'data/load_{date_string}.csv')
+    print('done')
 
 if __name__ == '__main__':
     main()
